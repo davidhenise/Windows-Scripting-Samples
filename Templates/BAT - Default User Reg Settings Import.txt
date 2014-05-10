@@ -1,0 +1,7 @@
+reg load HKU\TempUser "C:\Documents and Settings\Default User\ntuser.dat"
+
+:: Edit this line ::
+reg import Settings.reg
+
+reg unload HKU\TempUser
+pause

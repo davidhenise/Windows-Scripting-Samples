@@ -1,0 +1,23 @@
+'How to Use this function: 
+'
+'Create an Array from a list (a simple, hardcoded example is shown for demo purposes)
+PCs = Array(ComputerName1,ComputerName2,ComputerName3)
+'Then do an action for each online computer in the list (i.e. "If Ping(PC) = True Then")
+For Each Item in PCs
+    If Ping(Item) then 
+        'Do Something
+    End If
+Next
+
+
+Function Ping(PC)
+Set objShell = CreateObject("WScript.Shell")
+Set objWshExec = objShell.Exec("ping.exe " & PC)
+Set objStdOut = objWshExec.StdOut
+awake=False
+Do Until objStdOut.AtEndOfStream
+strLine = objStdOut.ReadLine
+awake = awake Or InStr(LCase(strLine), "bytes=") > 0
+Loop
+Ping = awake
+End Function

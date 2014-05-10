@@ -1,0 +1,1 @@
+For /F "Tokens=*" %%I in ('<any command>') Do Set <variable name>=%%I

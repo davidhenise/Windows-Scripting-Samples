@@ -1,0 +1,61 @@
+'How to Use this function: 
+'
+'Create a list/array (a simple, hardcoded example is shown for demo purposes)
+aOpt = Array(1,2,3)
+'Then place the name of that array as the second variable (after the SelectBox's title and the comma) when calling the SelectBox function
+SelectBox "Select an Option", aOpt
+
+
+Function SelectBox(sTitle, aOptions)
+    Dim oIE, s, item
+    set oIE = CreateObject("InternetExplorer.Application")
+    With oIE
+        .FullScreen = False
+        .ToolBar    = False : .RegisterAsDropTarget = False
+        .StatusBar  = False : .Navigate("about:blank")
+        .width = 400 : .height = 200
+        Do Until .ReadyState = 4 : WScript.Sleep 100 : Loop
+        With .document
+            With .parentWindow.screen
+                oIE.left = (.availWidth  - oIE.width ) \ 2
+                oIE.top  = (.availheight - oIE.height) \ 2
+            End With
+            s = "<html><head><title>" & sTitle _
+            & "</title></head><script language=vbs>bWait=true<" & "/script>" _
+            & "<body bgColor=Silver><center>" _
+            & "<b>" & sTitle & "<b><p>" _
+            & "<select id=entries size=1 style='width:325px'>" _
+            & "  <option selected>" & sTitle & "</option>" _
+            & "  <option> </option>"
+            For each item in aOptions
+                If item <> "" Then s = s & "  <option>" & item & "</option>"
+            Next
+            s = s & "  </select><p>" _
+            & "<button id=but0 onclick='bWait=false'>OK</button>" _
+            & "</center></body></html>"
+            .open
+            .Write(s)
+            .close
+            Do until .ReadyState ="complete" : Wscript.Sleep 50 : Loop
+            With .body
+                .scroll="no"
+                .style.borderStyle = "outset"
+                .style.borderWidth = "3px"
+            End With
+            .all.entries.focus
+            oIE.Visible = True
+            CreateObject("Wscript.Shell").AppActivate sTitle
+            On Error Resume Next
+            Do While .ParentWindow.bWait
+                WScript.Sleep 100
+                If oIE.Visible Then SelectBox = "Aborted"
+                If Err.Number <> 0 Then Exit Function
+            Loop
+            On Error Goto 0
+            With .ParentWindow.entries
+                SelectBox = .options(.selectedIndex).text
+            End With
+        End With
+        .Visible = False
+    End With
+End Function

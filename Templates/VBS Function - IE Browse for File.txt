@@ -1,0 +1,20 @@
+Function Browse()
+Dim Q2, sRet, IE
+On Error Resume Next
+Q2 = chr(34)
+Set IE = CreateObject("InternetExplorer.Application")
+IE.visible = False
+IE.Navigate("about:blank")
+Do Until IE.ReadyState = 4
+Loop
+IE.Document.Write "<HTML><BODY><INPUT ID=" & _
+Q2 & "Fil" & Q2 & "Type=" & Q2 & "file" & Q2 & _
+"></BODY></HTML>"
+With IE.Document.all.Fil
+    .focus
+    .click
+    Browse = .value
+End With
+IE.Quit
+Set IE = Nothing
+End Function

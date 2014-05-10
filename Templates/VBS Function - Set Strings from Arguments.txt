@@ -1,0 +1,28 @@
+'How This Function Works:
+'
+'The case names and string names can be modified for use in a new script. 
+'However, in the text below, the argument types are identified by the switches /ss /sn /sc AND /res
+'These argument types are equated to the "cases" in the Select function.
+'Then, the arguments themselves follow these switches the same as they might when passed to a DOS or 
+'Shell program on the command line and are then equated to the strings in each case in the function.
+
+
+Function SetVarsfromArgs()
+For a=0 To Wscript.Arguments.Count - 1 
+    strArg = LCase(Wscript.arguments.Item(a)) 
+    Select Case strArg 
+        Case "/ss" 
+            strSMSSiteServer =  Wscript.Arguments.Item(a+1) 
+            a = a + 1 
+        Case "/sn" 
+            strSMSSiteName =  Wscript.Arguments.Item(a+1) 
+            a = a + 1 
+        Case "/sc" 
+            strSMSCollection =  Wscript.Arguments.Item(a+1) 
+            a = a + 1 
+        Case "/res" 
+            ResID =  Wscript.Arguments.Item(a+1) 
+            a = a + 1 
+    End Select 
+Next
+End Function

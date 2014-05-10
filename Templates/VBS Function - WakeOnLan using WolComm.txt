@@ -1,0 +1,8 @@
+Function WOL(Mac,IP,Subnet)
+    Set WakeOnLan = CreateObject("WolCom.Wol")
+    WakeOnLan.TheMacAddress(Mac)
+    WakeOnLan.TheIpNumber(IP)
+    WakeOnLan.TheSubnetMask(Subnet)
+    WakeOnLan.ThePortNumber("8900")
+    WakeOnLan.WakeMeUp
+End Function
